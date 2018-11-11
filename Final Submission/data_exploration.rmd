@@ -1,0 +1,10 @@
+---
+title: "Data Exploration"
+output: html_notebook
+---
+```{r}
+data <- read_delim("C:/Users/Carlo/Desktop/homework-2-4571-beer-recommendation/Final Submission/beeradvocate_hw2.csv", 
+                   "^", escape_double = FALSE, col_types = cols(X1 = col_skip()), 
+                   trim_ws = TRUE)
+```
+
