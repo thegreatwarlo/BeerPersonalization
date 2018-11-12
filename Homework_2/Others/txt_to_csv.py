@@ -1,19 +1,20 @@
-file = open("D:/Columbia/Fall 2018/PTA/Project/beeradvocate.txt")
-file2 = open("D:/Columbia/Fall 2018/PTA/Project/beeradvocate1.csv", "w")
-file2.write("beer/name^ beer/beerId^ beer/brewer^ beer/ABV^ beer/style^ review/appearance^ review/aroma^ review/palate^ review/taste^ review/overall^ review/time^ review/profileName^ review/text\n")
-count = 0
-for i in file:
-    count = count + 1 
+import gzip
+    
+file_in = gzip.open('Beeradvocate.txt.gz', 'r')
+file_out = open("beeradvocate.csv", "w")
+file_out.write("beer/name^ beer/beerId^ beer/brewer^ beer/ABV^ beer/style^ review/appearance^ review/aroma^ review/palate^ review/taste^ review/overall^ review/time^ review/profileName^ review/text\n")
+
+for i in file_in:
     line = ""
     while i != '\n':
+        i = i.decode('utf-8', errors = 'ignore')
         line = line + i.split(":", 1)[1].rstrip()
         if(not("review/text" in i)):
             line = line +  "^" 
-        i = file.next()
-    print line
-    file2.write(line + "\n")
-    if count > 100:
-        break
-file.close()
+        i = file_in.next()
+    #print line
+    file_out.write(line.encode('utf-8') + "\n")
+
+file_in.close()
 
 # Please Take out line numbers 4, 6, 15 and 16 to run for the entire dataset

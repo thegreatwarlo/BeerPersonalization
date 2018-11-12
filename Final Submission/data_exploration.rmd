@@ -1,10 +1,80 @@
 ---
 title: "Data Exploration"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.height = 15,
+                      fig.width = 20)
+```
+
+
 ```{r}
-data <- read_delim("C:/Users/Carlo/Desktop/homework-2-4571-beer-recommendation/Final Submission/beeradvocate_hw2.csv", 
-                   "^", escape_double = FALSE, col_types = cols(X1 = col_skip()), 
+library(tidyverse)
+```
+
+
+
+```{r}
+data <- read_delim("C:/Users/Carlo/Desktop/BeerPersonalization/beeradvocate.csv", 
+                   "^", escape_double = FALSE, col_types = cols(`beer/brewer` = col_character()), 
                    trim_ws = TRUE)
+```
+
+###Top 100 users by number of reviews
+
+```{r}
+user_rev<- data %>% group_by(`review/profileName`) %>%
+                    summarize(count = n())
+summary(user_rev)
+```
+
+```{r}
+
+user_rev %>% arrange( desc(count)) %>% print(n = 100)
+```
+
+###Distribution of number of reviews by user
+
+```{r}
+ggplot(user_rev, aes(count))+
+  geom_histogram(binwidth = 10, fill = "Orange", colour = "black")+
+  scale_x_continuous(limits = c(0, 300), breaks = seq(0, 300, 10))+
+  scale_y_continuous(limits = c(0, 5500), breaks = seq(0, 5500, 1000))+
+  ggtitle("Number of users by amount of reviews")+
+  xlab("reviews by Users")+
+  ylab("# of users")
+  
+```
+
+###Top 100 beers by number of reviews
+
+```{r}
+#beer names are not unique
+beer_rev<- data %>% group_by(`beer/name`, `beer/brewer`) %>%
+                    summarize(count = n())
+summary(beer_rev)
+```
+
+```{r}
+beer_rev %>% arrange( desc(count)) %>% print(n = 100)
+```
+
+###Distribution of number of reviews by user
+
+```{r}
+ggplot(beer_rev, aes(count))+
+  geom_histogram(binwidth = 10, fill = "lightblue", colour = "black")+
+  scale_x_continuous(limits = c(0, 300), breaks = seq(0, 300, 10))+
+  scale_y_continuous(limits = c(0, 10000), breaks = seq(0, 10000, 1000))+
+  ggtitle("Number of beers by amount of reviews")+
+  xlab("# of reviews")+
+  ylab("# of beers")
 ```
 
