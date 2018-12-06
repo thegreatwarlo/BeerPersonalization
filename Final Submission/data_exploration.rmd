@@ -78,3 +78,26 @@ ggplot(beer_rev, aes(count))+
   ylab("# of beers")
 ```
 
+
+#Number of beers by ABV
+
+```{r}
+beeradvocate %>% group_by(`beer/name`, `beer/brewer`, `beer/ABV`) %>%
+                 summarize() %>%
+                 group_by(`beer/ABV`) %>%
+                 summarize(count = n()) %>%
+                 arrange(desc(`beer/ABV`))%>% 
+                 print(n = 100)
+```
+
+
+#check for outliers
+```{r}
+subset(beeradvocate, beeradvocate$`beer/ABV` > 16) %>%
+                group_by(`beer/name`, `beer/brewer`, `beer/ABV`) %>%
+                summarize()%>%
+                arrange(desc(`beer/ABV`))%>% 
+                print(n = 100)
+```
+
+Except for the top result, none of them look like outliers
